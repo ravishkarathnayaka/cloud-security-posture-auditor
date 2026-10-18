@@ -1,0 +1,272 @@
+[
+  {
+    "resource_id": "arn:aws:iam::123456789012:root",
+    "name": "aws-enterprise-root-account",
+    "provider": "AWS",
+    "category": "IDENTITY",
+    "resource_type": "iam_root_account",
+    "region": "global",
+    "properties": {
+      "mfa_active": false,
+      "access_keys_present": true,
+      "password_last_used": "2026-10-10T08:30:00Z"
+    },
+    "tags": {
+      "Environment": "Production",
+      "Owner": "CISO-Office"
+    }
+  },
+  {
+    "resource_id": "arn:aws:iam::123456789012:role/DevOps-Pipeline-Executor",
+    "name": "DevOps-Pipeline-Executor",
+    "provider": "AWS",
+    "category": "IDENTITY",
+    "resource_type": "iam_role",
+    "region": "global",
+    "properties": {
+      "assume_role_policy": "trusted_entities_all",
+      "policies": [
+        {
+          "policy_name": "OverlyPermissiveAdminAccess",
+          "statements": [
+            {
+              "effect": "Allow",
+              "action": "*",
+              "resource": "*"
+            }
+          ]
+        }
+      ]
+    },
+    "tags": {
+      "Team": "DevOps",
+      "ManagedBy": "Terraform"
+    }
+  },
+  {
+    "resource_id": "arn:aws:iam::123456789012:user/svc-reporting-etl",
+    "name": "svc-reporting-etl",
+    "provider": "AWS",
+    "category": "IDENTITY",
+    "resource_type": "iam_user",
+    "region": "global",
+    "properties": {
+      "mfa_active": false,
+      "access_key_age_days": 182,
+      "status": "Active"
+    },
+    "tags": {
+      "Service": "ETL-Pipeline"
+    }
+  },
+  {
+    "resource_id": "arn:aws:iam::123456789012:user/secops-analyst-lead",
+    "name": "secops-analyst-lead",
+    "provider": "AWS",
+    "category": "IDENTITY",
+    "resource_type": "iam_user",
+    "region": "global",
+    "properties": {
+      "mfa_active": true,
+      "access_key_age_days": 24,
+      "status": "Active"
+    },
+    "tags": {
+      "Department": "SecurityOperations"
+    }
+  },
+  {
+    "resource_id": "/subscriptions/sub-corp-prod-01/resourceGroups/rg-customer-data/providers/Microsoft.Storage/storageAccounts/stgcorprawcustomers",
+    "name": "stgcorprawcustomers",
+    "provider": "AZURE",
+    "category": "STORAGE",
+    "resource_type": "blob_storage_account",
+    "region": "eastus2",
+    "properties": {
+      "allow_blob_public_access": true,
+      "supports_https_traffic_only": false,
+      "minimum_tls_version": "TLS1_0",
+      "encryption_enabled": true,
+      "key_source": "Microsoft.Storage"
+    },
+    "tags": {
+      "Classification": "Confidential",
+      "DataOwner": "CustomerSuccess"
+    }
+  },
+  {
+    "resource_id": "arn:aws:s3:::corp-finance-archive-2026",
+    "name": "corp-finance-archive-2026",
+    "provider": "AWS",
+    "category": "STORAGE",
+    "resource_type": "s3_bucket",
+    "region": "us-east-1",
+    "properties": {
+      "public_access_block": {
+        "block_public_acls": true,
+        "block_public_policy": true,
+        "ignore_public_acls": true,
+        "restrict_public_buckets": true
+      },
+      "server_side_encryption": {
+        "enabled": false
+      },
+      "enforce_ssl_requests": false
+    },
+    "tags": {
+      "Compliance": "SOX",
+      "Department": "Finance"
+    }
+  },
+  {
+    "resource_id": "arn:aws:s3:::corp-immutable-audit-vault",
+    "name": "corp-immutable-audit-vault",
+    "provider": "AWS",
+    "category": "STORAGE",
+    "resource_type": "s3_bucket",
+    "region": "us-east-1",
+    "properties": {
+      "public_access_block": {
+        "block_public_acls": true,
+        "block_public_policy": true,
+        "ignore_public_acls": true,
+        "restrict_public_buckets": true
+      },
+      "server_side_encryption": {
+        "enabled": true,
+        "kms_master_key_id": "arn:aws:kms:us-east-1:123456789012:key/c4578b"
+      },
+      "enforce_ssl_requests": true
+    },
+    "tags": {
+      "Compliance": "ISO27001",
+      "Department": "SecOps"
+    }
+  },
+  {
+    "resource_id": "/subscriptions/sub-corp-prod-01/resourceGroups/rg-network-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-dmz-perimeter",
+    "name": "nsg-dmz-perimeter",
+    "provider": "AZURE",
+    "category": "NETWORK",
+    "resource_type": "network_security_group",
+    "region": "eastus2",
+    "properties": {
+      "security_rules": [
+        {
+          "name": "Allow-Any-RDP",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "source_address_prefix": "0.0.0.0/0",
+          "destination_port_range": "3389"
+        },
+        {
+          "name": "Allow-Any-SSH",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "source_address_prefix": "0.0.0.0/0",
+          "destination_port_range": "22"
+        }
+      ]
+    },
+    "tags": {
+      "Tier": "Perimeter",
+      "Criticality": "Tier-1"
+    }
+  },
+  {
+    "resource_id": "/subscriptions/sub-corp-prod-01/resourceGroups/rg-database-prod/providers/Microsoft.Network/networkSecurityGroups/nsg-prod-databases",
+    "name": "nsg-prod-databases",
+    "provider": "AZURE",
+    "category": "NETWORK",
+    "resource_type": "network_security_group",
+    "region": "eastus2",
+    "properties": {
+      "security_rules": [
+        {
+          "name": "Allow-MySQL-Public",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "source_address_prefix": "*",
+          "destination_port_range": "3306"
+        },
+        {
+          "name": "Allow-Postgres-Public",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "TCP",
+          "source_address_prefix": "0.0.0.0/0",
+          "destination_port_range": "5432"
+        }
+      ]
+    },
+    "tags": {
+      "Tier": "DataLayer"
+    }
+  },
+  {
+    "resource_id": "/subscriptions/sub-corp-prod-01/resourceGroups/rg-backend-services/providers/Microsoft.Network/networkSecurityGroups/nsg-internal-services",
+    "name": "nsg-internal-services",
+    "provider": "AZURE",
+    "category": "NETWORK",
+    "resource_type": "network_security_group",
+    "region": "eastus2",
+    "properties": {
+      "security_rules": [
+        {
+          "name": "Allow-VNet-Internal",
+          "direction": "Inbound",
+          "access": "Allow",
+          "protocol": "*",
+          "source_address_prefix": "10.240.0.0/16",
+          "destination_port_range": "*"
+        }
+      ]
+    },
+    "tags": {
+      "Tier": "Internal"
+    }
+  },
+  {
+    "resource_id": "/subscriptions/sub-corp-prod-01/resourceGroups/rg-compute-prod/providers/Microsoft.Compute/virtualMachines/vm-legacy-reporting",
+    "name": "vm-legacy-reporting",
+    "provider": "AZURE",
+    "category": "COMPUTE",
+    "resource_type": "virtual_machine",
+    "region": "eastus2",
+    "properties": {
+      "os_type": "Windows",
+      "os_disk": {
+        "name": "osdisk-legacy-reporting",
+        "encryption_type": "Unencrypted"
+      },
+      "public_ip_attached": true,
+      "public_ip_address": "52.167.44.119",
+      "diagnostics_enabled": false
+    },
+    "tags": {
+      "Workload": "Legacy-Reporting"
+    }
+  },
+  {
+    "resource_id": "/subscriptions/sub-corp-prod-01/providers/microsoft.insights/logprofiles/default",
+    "name": "azure-activity-log-profile",
+    "provider": "AZURE",
+    "category": "LOGGING",
+    "resource_type": "log_profile",
+    "region": "global",
+    "properties": {
+      "activity_log_enabled": false,
+      "retention_policy": {
+        "enabled": false,
+        "days": 0
+      },
+      "categories": []
+    },
+    "tags": {
+      "Compliance": "GlobalGovernance"
+    }
+  }
+]
